@@ -1,10 +1,34 @@
 variable "subscription_id" {
   description = "The ID of the subscription"
+  type        = string
 
 }
 
+
+//Backend details
+
+variable "backend_resource_group_name" {
+  type = string
+}
+
+variable "backend_storage_account_name" {
+  type = string
+}
+
+variable "backend_container_name" {
+  type = string
+}
+
+variable "backend_key" {
+  type = string
+}
+
+
+// Resource details
+
 variable "email_address" {
   description = "The Email address to Send Autoscaling alerts to"
+  type        = string
 
 }
 
@@ -111,12 +135,6 @@ variable "vmss_sku" {
   type        = string
 }
 
-variable "vmss_instances" {
-  description = "The number of instances for the Virtual Machine Scale Set"
-  type        = number
-  default     = 3
-}
-
 variable "vmss_zones" {
   description = "Availability Zones for the Virtual Machine Scale Set"
   type        = list(string)
@@ -138,3 +156,33 @@ variable "ssh_public_key_path" {
 #   description = "Backend address pool IDs for the Application Gateway"
 #   type        = list(string)
 # }
+
+
+
+//Monitor
+
+
+
+variable "storage_account_name" {
+  description = "The name of the storage account to store logs in"
+  type        = string
+
+}
+
+variable "action_group_email_name" {
+  description = "The name of the email receiver for the action group"
+  type        = string
+
+}
+
+variable "action_group_name" {
+  description = "The name of the action group"
+  type        = string
+
+}
+
+variable "log_analytics_workspace_name" {
+  description = "The name of the log analytics workspace"
+  type        = string
+
+}

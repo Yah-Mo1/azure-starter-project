@@ -1,17 +1,20 @@
 terraform {
+
+  required_version = ">= 1.3.0, < 1.6.0" # Move this outside required_providers
+
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "4.21.1"
     }
+
   }
   //TODO: First create the azure storage account
-    backend "azurerm" {
-      resource_group_name  = "tfstate-rg"# Can be passed via `-backend-config=`"resource_group_name=<resource group name>"` in the `init` command.
-      storage_account_name = "codercostorageacc"                      # Can be passed via `-backend-config=`"storage_account_name=<storage account name>"` in the `init` command.
-      container_name       = "coderco-tfstate-container"                       # Can be passed via `-backend-config=`"container_name=<container name>"` in the `init` command.
-      key                  = "devpipeline.terraform.tfstate"        # Can be passed via `-backend-config=`"key=<blob key name>"` in the `init` command.
-
+  backend "azurerm" {
+    resource_group_name  = var.backend_resource_group_name
+    storage_account_name = var.backend_storage_account_name
+    container_name       = var.backend_container_name
+    key                  = var.backend_key
   }
 
 }

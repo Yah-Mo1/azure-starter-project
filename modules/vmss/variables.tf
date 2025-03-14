@@ -48,3 +48,13 @@ variable "app_gateway_backend_address_pool_ids" {
   description = "Backend address pool IDs for the Application Gateway"
   type        = list(string)
 }
+
+variable "log_analytics_workspace_id" {
+  description = "The ID of the log analytics workspace"
+  
+}
+
+variable "storage_account_id" {
+  description = "The ID of the storage account used to store logs"
+  
+}

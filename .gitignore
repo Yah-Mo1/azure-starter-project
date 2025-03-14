@@ -5,6 +5,7 @@
 *.tfstate
 *.tfstate.*
 
+*.tflint.hcl
 # Crash log files
 crash.log
 crash.*.log

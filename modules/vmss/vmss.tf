@@ -125,3 +125,34 @@ resource "azurerm_monitor_autoscale_setting" "coderco_vmss_autoscale" {
     look_ahead_time = "PT5M"
   }
 }
+
+
+resource "azurerm_monitor_diagnostic_setting" "vmss_logs" {
+  name                       = "vmss-diagnostics"
+  target_resource_id         = azurerm_linux_virtual_machine_scale_set.coderco_vmss.id
+  log_analytics_workspace_id = var.log_analytics_workspace_id
+  storage_account_id = var.storage_account_id
+
+  #  enabled_log {
+  #   category = "Administrative"
+  # }
+ 
+  # enabled_log {
+  #   category = "ServiceHealth"
+  # }
+
+  
+
+
+  # enabled_log {
+  #   category = "ResourceHealth"
+  # }
+
+  # enabled_log {
+  #   category = "AuditEvent"
+  # }
+  metric {
+    category = "AllMetrics"
+    enabled  = true
+  }
+}
