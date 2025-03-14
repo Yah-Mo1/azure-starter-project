@@ -3,27 +3,6 @@ variable "subscription_id" {
   type        = string
 
 }
-
-
-//Backend details
-
-variable "backend_resource_group_name" {
-  type = string
-}
-
-variable "backend_storage_account_name" {
-  type = string
-}
-
-variable "backend_container_name" {
-  type = string
-}
-
-variable "backend_key" {
-  type = string
-}
-
-
 // Resource details
 
 variable "email_address" {
