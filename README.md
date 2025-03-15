@@ -1,84 +1,126 @@
-# 🚀 CoderCo Azure Starter
+# 🚀 CoderCo Azure Terraform Starter
 
-## 🌍 Overview
+## 📖 Overview
 
-Welcome to the **CoderCo Azure Terraform Starter**! This technical assessment is designed to evaluate your ability to deploy and manage infrastructure on **Microsoft Azure using Terraform**. The primary focus is on **Virtual Machine Scale Sets (VMSS), high availability, and best practices**.
+This repository provides a **Terraform-based infrastructure deployment** for **Microsoft Azure**, focusing on **Virtual Machine Scale Sets (VMSS), high availability, and best practices**.
 
-The provided Terraform configuration contains multiple errors and incomplete features. Your task is to **debug, improve, and extend the solution** following **Terraform best practices**.
-
-No direct SSH or RDP access is required, but you can enable access for troubleshooting if necessary. Feel free to tackle the tasks in any order, and remember, you are **not expected to complete all tasks** within the given time.
-
-## 🛠 Pre-Requisites
-
-Ensure you have the following installed:
-
-- ✅ **Azure CLI** (authenticated to your Azure subscription)
-- ✅ **Terraform** (latest stable version)
-- ✅ **jq** (for JSON parsing in CLI)
-
-## 📌 Tasks
-
-### Debug & Fix the Configuration
-
-- The supplied Terraform code contains multiple **syntax, provider, and logical errors**.
-- Fix the errors to ensure `terraform plan` runs successfully.
-- Ensure **Terraform state management** is configured properly (**use remote backend** where applicable).
-
-### 🚀 Ensure Successful Deployment
-
-- The current configuration **fails during apply**. Identify and fix the issues.
-- Ensure the application deployed to the VM scale set is **accessible via HTTP on port 80**.
-- Test by retrieving the **public IP** and verifying a response like:
-
-"Hello! Your CoderCo Tech Test VM is working!"
-
-### 📈 Scale & High Availability Enhancements
-
-- Update the **Virtual Machine Scale Set (VMSS)** to run **3 instances**.
-- Distribute instances across **multiple Availability Zones** for high availability.
-- Ensure **automatic scaling** is configured correctly.
-
-### 🔒 Networking & Security Best Practices
-
-- Upgrade to an Azure Application Load Balancer (ALB) to distribute traffic across VMSS nodes.
-- Ensure the infrastructure follows **principle of least privilege** by restricting unnecessary security group rules.
-- Configure **network security groups (NSGs)** to allow only **port 80 for HTTP traffic**.
-- Ensure **data encryption at rest** for any storage resources.
-
-### 🐧 Make the Solution Linux-Compatible
-
-- The current solution is Windows-based. Modify it to deploy **Linux-based VMs** instead.
-- Ensure the application starts and serves traffic correctly on Linux.
-- Use **cloud-init or Terraform provisioners** to configure the VM on boot.
-
-### 🏆 Enforce Terraform Best Practices
-
-- Remove any **Terraform warnings and deprecations**.
-- Refactor the solution to follow the **DRY (Don't Repeat Yourself) principle** using:
-- **Modules** for reusable components.
-- **Variables** for configurable parameters.
-- **Outputs** to expose useful information.
-- **Locals** to simplify expressions.
-- Implement **Terraform linting** to ensure code quality.
-- Use **Terraform locking and version pinning** to prevent unintended updates.
-
-### ⭐ Extra Credit
-
-- Implement **logging and monitoring** using Azure Monitor and Log Analytics.
-- Store Terraform state in an **Azure Storage Account with state locking**.
-- Automate Terraform deployments using **CI/CD pipelines (GitHub Actions, Azure DevOps)**.
+This README outlines the **steps to deploy the infrastructure**, along with key **assumptions, limitations, and trade-offs** made during the implementation.
 
 ---
 
-## 📩 Submission Guidelines
+## 🛠 Prerequisites
 
-- Provide a **GitHub repository** with your Terraform code and documentation.
-- Include a **README.md** with instructions on how to apply the Terraform configuration.
-- Document any **assumptions, limitations, or trade-offs** you made.
-- If using modules, structure your code following a **clean, modular approach**.
+Before deploying, ensure you have the following installed:
 
-**All the best!** 🚀
+- ✅ **Azure CLI** – [Download & Install](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+- ✅ **Terraform** (latest stable version) – [Download & Install](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- ✅ **jq** (for JSON parsing in CLI)
+- ✅ **An Azure Subscription** with the correct permissions
 
-## Version Details
+Ensure you are authenticated with Azure:
 
-**Version:** 1.0
+```sh
+az login
+```
+
+To verify the correct subscription is active:
+
+```sh
+az account show
+```
+
+---
+
+## 🚀 Deployment Steps
+
+### 1️⃣ Clone the Repository
+
+```sh
+git clone https://github.com/YOUR_GITHUB_USERNAME/coderco-azure-terraform.git
+cd coderco-azure-terraform
+```
+
+### 2️⃣ Initialise Terraform
+
+Run the following command to initialise Terraform and download required providers:
+
+```sh
+terraform init
+```
+
+### 3️⃣ Validate & Plan
+
+Before applying changes, ensure the configuration is valid:
+
+```sh
+terraform validate
+terraform plan
+```
+
+### 4️⃣ Apply the Terraform Configuration
+
+Deploy the infrastructure:
+
+```sh
+terraform apply -auto-approve
+```
+
+Terraform will output the **public IP** of the application load balancer after a successful deployment. You can access the application via:
+
+```sh
+curl http://<PUBLIC_IP>
+```
+
+Expected Response:
+
+```
+Hello! Your CoderCo Tech Test VM is working!
+```
+
+### 5️⃣ Destroy the Resources (If Needed)
+
+To remove all created resources:
+
+```sh
+terraform destroy -auto-approve
+```
+
+---
+
+## 📌 Assumptions, Limitations & Trade-offs
+
+### ✅ Assumptions
+
+- The VM Scale Set should be **Linux-based** instead of Windows.
+- **Auto-scaling** should be enabled with a minimum of **3 instances** across **multiple Availability Zones**.
+- The application should be accessible via **HTTP on port 80**.
+- Terraform **state should be stored remotely** for production use (not included in this setup by default).
+
+### ⚠️ Limitations
+
+- **No database configuration** is included. If required, a managed database service like **Azure Database for PostgreSQL** should be added.
+- **No CI/CD automation** is included, but it can be implemented using **GitHub Actions** or **Azure DevOps Pipelines**.
+- The setup assumes a **static workload**; additional autoscaling rules may be required for highly dynamic workloads.
+
+### 🔄 Trade-offs
+
+- **Using an Azure Load Balancer (ALB)** instead of an **Application Gateway** keeps costs lower, but **ALB does not offer WAF (Web Application Firewall)**.
+- **Standard_D2s_v3 VM size** is chosen to balance **performance and cost-efficiency**.
+- **Terraform provisioners are not used** to keep the setup declarative and avoid dependency issues; instead, **cloud-init** is recommended for VM provisioning.
+
+---
+
+## 🏆 Future Enhancements
+
+- ✅ Implement **autoscaling policies** based on CPU utilisation.
+- ✅ Store Terraform state in an **Azure Storage Account with state locking**.
+- ✅ Automate deployments using **Azure DevOps Pipelines or GitHub Actions**.
+- ✅ Enable monitoring using **Azure Monitor & Log Analytics**.
+
+---
+
+## 📩 Support
+
+If you encounter issues, please open an issue on **GitHub** or contact the repository maintainers.
+
+**Happy Coding! 🚀**
