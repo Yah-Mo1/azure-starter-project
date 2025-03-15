@@ -36,8 +36,8 @@ az account show
 ### 1️⃣ Clone the Repository
 
 ```sh
-git clone https://github.com/YOUR_GITHUB_USERNAME/coderco-azure-terraform.git
-cd coderco-azure-terraform
+git clone https://github.com/Yah-Mo1/azure-starter-project
+cd cd azure-starter-project
 ```
 
 ### 2️⃣ Initialise Terraform
